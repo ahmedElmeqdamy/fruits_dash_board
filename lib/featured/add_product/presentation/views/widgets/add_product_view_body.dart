@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruits_dash_board/core/widgets/custom_button.dart';
 import 'package:fruits_dash_board/featured/add_product/domain/entities/add_product_input_entity.dart';
+import 'package:fruits_dash_board/featured/add_product/domain/entities/review_entity.dart';
 
 import '../../../../../core/widgets/box_error.dart';
 import '../../../../../core/widgets/custom_text_form.dart';
 import '../../manager/add_product_cubit.dart';
 import 'image_feild.dart';
 import 'is_featured_check_box.dart';
+import 'is_organic.dart';
 
 class AddProductViewBody extends StatefulWidget {
   const AddProductViewBody({super.key});
@@ -23,11 +25,12 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
   AutovalidateMode autoValidateMode = AutovalidateMode.disabled;
   late String name;
   late String description;
-  late num price;
+  late num price, expirationMonth, numberOfCalories, unitAmount;
   late String code;
   File? image;
   late String imageUrl;
   bool isFeatured = false;
+  bool isOrganic = false;
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +71,33 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
                 SizedBox(height: 10),
                 CustomTextFormField(
                   onSaved: (value) {
+                    expirationMonth = num.parse(value!);
+                  },
+                  hintText: 'Expiration month',
+                  maxLines: 1,
+                  keyboardType: TextInputType.number,
+                ),
+                SizedBox(height: 10),
+                CustomTextFormField(
+                  onSaved: (value) {
+                    numberOfCalories = num.parse(value!);
+                  },
+                  hintText: 'Number of calories',
+                  maxLines: 1,
+                  keyboardType: TextInputType.number,
+                ),
+                SizedBox(height: 10),
+                CustomTextFormField(
+                  onSaved: (value) {
+                    unitAmount = num.parse(value!);
+                  },
+                  hintText: 'unit amount',
+                  maxLines: 1,
+                  keyboardType: TextInputType.number,
+                ),
+                SizedBox(height: 10),
+                CustomTextFormField(
+                  onSaved: (value) {
                     code = value!.toLowerCase();
                   },
                   hintText: 'product code',
@@ -81,12 +111,24 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
                   },
                 ),
                 SizedBox(height: 10),
-                IsFeaturedCheckBox(onChanged: (value) {}),
+                IsOrganic(
+                  onChanged: (value) {
+                    isOrganic = value;
+                    setState(() {});
+                  },
+                ),
+                SizedBox(height: 10),
+                IsFeaturedCheckBox(
+                  onChanged: (value) {
+                    isFeatured = value;
+                    setState(() {});
+                  },
+                ),
                 SizedBox(height: 40),
                 CustomButton(
                   backgroundColor: Colors.blueAccent,
                   textColor: Colors.white,
-                  text: 'add product please',
+                  text: 'add product please ?',
                   onPressed: () {
                     if (image != null) {
                       if (formKey.currentState!.validate()) {
@@ -99,7 +141,20 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
                           code: code,
                           image: image!,
                           isFeatured: isFeatured,
-                         // imageUrl: imageUrl,
+                          expirationMonth: expirationMonth.toInt(),
+                          numberOfCalories: numberOfCalories.toInt(),
+                          unitAmount: unitAmount.toInt(),
+                          isOrganic: isOrganic,
+                          reviews: [
+                            ReviewEntity(
+                              name: 'ahmed',
+                              image: 'https://via.placeholder.com/150',
+                              rating: 5,
+                              date: 'place holder',
+                              reviewDescription: 'asdsad',
+                            ),
+                          ],
+                          // imageUrl: imageUrl,
                         );
                         context.read<AddProductCubit>().addProduct(input);
                       } else {

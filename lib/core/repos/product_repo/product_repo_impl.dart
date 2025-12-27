@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:fruits_dash_board/core/errors/failure.dart';
 import 'package:fruits_dash_board/core/repos/product_repo/product_repo.dart';
@@ -23,6 +25,7 @@ class ProductRepoImpl implements ProductRepo {
 
       return right(null);
     } catch (error) {
+      log('.................._______________________________$error');
       return Left(ServerFailure(error.toString()));
     }
   }

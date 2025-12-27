@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruits_dash_board/featured/add_product/presentation/views/widgets/add_product_view_body.dart';
+import 'package:fruits_dash_board/featured/add_product/presentation/views/widgets/add_product_view_body_bloc_builder.dart';
 
 import '../../../../core/repos/image_repo/image_repo.dart';
 import '../../../../core/repos/product_repo/product_repo.dart';
@@ -17,8 +18,10 @@ class AddProductsView extends StatelessWidget {
       body: BlocProvider(
         create: (context) =>
             AddProductCubit(getIt.get<ImageRepo>(), getIt.get<ProductRepo>()),
-        child: AddProductViewBody(),
+        child: AddProductViewBodyBlocBuilder(),
       ),
     );
   }
 }
+
+

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
 class ShowBoxError {
-  static Future<void> show(BuildContext context, String errorMessage) {
+  static Future<void> show(
+    BuildContext context,
+    String errorMessage,
+      {String message = 'Error'}
+  ) {
     return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Error'),
+          title:  Text(message),
           content: Text(errorMessage),
           actions: [
             TextButton(

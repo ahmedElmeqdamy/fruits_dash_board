@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'database_services.dart';
@@ -11,6 +13,7 @@ class FirestoreServices implements DatabaseServices {
     required Map<String, dynamic> data,
     String? documentId,
   }) async {
+    log('log in try to add data by firebaes');
     if (documentId != null) {
       await firebaseFirestore.collection(path).doc(documentId).set(data);
     } else {
@@ -29,6 +32,7 @@ class FirestoreServices implements DatabaseServices {
 
   @override
   Future<bool> isDataExit({required String path, required String uid}) async {
+    log('_______________________________________try to check data by firebase');
     final data = await firebaseFirestore.collection(path).doc(uid).get();
     return data.exists;
   }

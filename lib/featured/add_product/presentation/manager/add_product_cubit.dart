@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruits_dash_board/featured/add_product/domain/entities/add_product_input_entity.dart';
 
@@ -14,11 +16,16 @@ class AddProductCubit extends Cubit<AddProductState> {
   Future<void> addProduct(AddProductInputEntity addProductInputEntity) async {
     emit(AddProductLoading());
     var result = await imageRepo.uploadImage(addProductInputEntity.image);
-    result.fold((l) => emit(AddProductFailure(l.message)), (url) async {
+    result.fold((l) {
+
+      emit(AddProductFailure(l.message+'\n- error in upload image'));
+    }, (url) async {
       addProductInputEntity.imageUrl = url;
 
       var result = await productRepo.addProduct(addProductInputEntity);
-      result.fold((l) => emit(AddProductFailure(l.message)), (r) {
+      result.fold((l) {
+        emit(AddProductFailure(l.message+'\n- error in add product'));
+      }, (r) {
         emit(AddProductSuccess());
       });
     });
